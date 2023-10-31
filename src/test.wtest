@@ -1,0 +1,91 @@
+import Participantes.*
+import Cumbre.*
+import conocimientos.*
+
+describe "Primer Test Participantes" {
+	const argentina = new Pais()
+ 	const brasil = new Pais()
+ 	const colombia = new Pais()
+
+	const juana = new Programador(pais=argentina,commits=600)
+	const lucia = new Programador(pais=brasil,commits=800)
+	const mariana = new Especialista(pais=argentina,commits=200)
+	const susana = new Especialista(pais=colombia,commits=1500)
+
+	method initialize(){
+		juana.agregarConocimientos([programacionBasica,css,html])
+		lucia.agregarConocimientos([programacionBasica,basesDeDatos])
+		mariana.agregarConocimientos([programacionBasica,instalacionLinux,objetos,disenioConObjetos])
+		susana.agregarConocimientos([programacionBasica,objetos])
+		cumbre.registrarParticipante(juana)
+		cumbre.registrarParticipante(lucia)
+		cumbre.registrarParticipante(mariana)
+	}
+
+	test "paises de participantes de la cumbre" {
+	assert.equals(#{argentina,brasil},cumbre.paisesDeLosParticipantes())
+	}
+
+	test "hay 2 participantes de Argentina" {
+		assert.equals(2, cumbre.cantidadDeParticipantesDePais(argentina))
+	}
+
+	test "hay 1 participante de Brasil" {
+		assert.equals(1, cumbre.cantidadDeParticipantesDePais(brasil))
+	}
+
+	test "Argentina es el pais con mas participantes" {
+		assert.equals(argentina, cumbre.paisConMasParticipantes())
+	}
+
+	test "la cumbre es relevante" {
+		assert.that(cumbre.esRelevante())
+	}	
+}
+
+describe "Segundo Test Participantes" {
+	const argentina = new Pais()
+ 	const brasil = new Pais()
+ 	const colombia = new Pais()
+ 	const coreaDelSur = new Pais()
+ 	const coreaDelNorte = new Pais()
+
+	const juana = new Programador(pais=argentina,commits=600)
+	const lucia = new Programador(pais=brasil,commits=800)
+	const mariana = new Especialista(pais=argentina,commits=200)
+	const susana = new Especialista(pais=colombia,commits=1500)
+
+	method initialize(){
+		juana.agregarConocimientos([programacionBasica,css,html])
+		lucia.agregarConocimientos([programacionBasica,basesDeDatos])
+		mariana.agregarConocimientos([programacionBasica,instalacionLinux,objetos,disenioConObjetos])
+		susana.agregarConocimientos([programacionBasica,objetos])
+		cumbre.registrarParticipante(juana)
+		cumbre.registrarParticipante(lucia)
+		cumbre.registrarParticipante(mariana)
+		cumbre.registrarParticipante(susana)
+
+		coreaDelSur.registrarConflicto(coreaDelNorte)
+		cumbre.agregarAuspiciantes([argentina,colombia,coreaDelNorte])
+	}
+
+	test "paises de participantes de la cumbre" {
+	assert.equals(#{argentina,brasil,colombia},cumbre.paisesDeLosParticipantes())
+	}
+
+	test "Argentina es el pais con mas participantes" {
+		assert.equals(argentina, cumbre.paisConMasParticipantes())
+	}
+
+	test "la cumbre No es relevante" {
+		assert.notThat(cumbre.esRelevante())
+	}
+
+	test "corea del sur es conflictivo para la cumbre" {
+		assert.that(coreaDelSur.esConflictivoParaLaCumbre())
+	}
+
+	test "Lucia es la unica participante extranjera" {
+		assert.equals(#{lucia}, cumbre.participantesExtranjeros())
+	}
+}
